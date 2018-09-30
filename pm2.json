@@ -1,0 +1,16 @@
+{
+  "apps": [{
+    "name": "hfAdminServer",
+    "script": "www/production.js",
+    "cwd": "/DATACENTER1/wenwei.fu/hfAdmin/hfAdminServer",
+    "exec_mode": "cluster",
+    "instances": 0,
+    "max_memory_restart": "1G",
+    "autorestart": true,
+    "node_args": [],
+    "args": [],
+    "env": {
+      
+    }
+  }]
+}
