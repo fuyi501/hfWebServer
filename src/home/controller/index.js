@@ -17,7 +17,7 @@ export default class extends Base {
     this.header('Access-Control-Allow-Headers', 'Content-Type');
     // this.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");
   }
-  // 保存拍摄的图片
+  // 保存表格
   async savetableAction() {
     console.log("保存表格")
     this.setCorsHeader()
@@ -56,7 +56,7 @@ export default class extends Base {
         //过滤data:URL
         var base64Data = imgData.replace(/^data:image\/\w+;base64,/, "")
         var dataBuffer = new Buffer(base64Data, 'base64')
-        let savepath = think.RESOURCE_PATH + '\\upload\\faceimg\\' + imgInfo.name
+        let savepath = think.RESOURCE_PATH + '/upload/faceimg/' + imgInfo.name
         fs.exists(savepath, (isexist) => {
           console.log("isexist", isexist)
           if(!isexist){
@@ -85,9 +85,9 @@ export default class extends Base {
         if (userAvatar.originalFilename) {
           fs.readFile(userAvatar.path, (err, data) => {
 
-            var imgType = userAvatar.originalFilename.split('.')[1]
-            var newName = userInfo.uid  + '.' + imgType
-            var savePath = think.RESOURCE_PATH + '\\upload\\avatar\\' + newName
+            // var imgType = userAvatar.originalFilename.split('.')[1]
+            // var newName = userInfo.uid  + '.' + imgType
+            var savePath = think.RESOURCE_PATH + '/upload/avatar/' + userAvatar.originalFilename
             fs.exists(savePath, (isexist) => {
               console.log("isexist", isexist)
               if(!isexist){
