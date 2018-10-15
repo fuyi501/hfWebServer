@@ -216,6 +216,153 @@ export default class extends Base {
       this.fail('请求方法不对')
     }
   }
+
+  // 保存拍摄的图片
+  async imgallAction() {
+    console.log("保存拍摄的图片")
+    this.setCorsHeader()
+    if (this.isPost()) {
+      let imgInfo = this.post()
+      console.log("imgInfo:",imgInfo)
+      imgInfo = imgInfo.imgInfo
+      if (!think.isEmpty(imgInfo)) {
+        for(let i in imgInfo) {
+          //接收前台POST过来的base64
+          var imgData = imgInfo[i].url
+          //过滤data:URL
+          var base64Data = imgData.replace(/^data:image\/\w+;base64,/, "")
+          var dataBuffer = new Buffer(base64Data, 'base64')
+
+          let faceInfo = imgInfo[i].name.split('_')
+          let faceCount = faceInfo[2].split('.')
+          console.log(faceInfo, faceCount)
+
+          let savepath1 = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + faceInfo[0] + '_' + faceInfo[1] + '.jpg'
+          let savepath2 = '/DATACENTER3/huifu/face_lib/' + faceInfo[0]
+
+          // 第一张保存
+          if (faceCount[0] === '1') {
+            fs.exists(savepath1, (isexist) => {
+              console.log("isexist", isexist)
+              if (!isexist) {
+                fs.writeFile(savepath1, dataBuffer, (err) => {
+                  console.log("不存在，准备保存")
+                  if (err === null) {
+                    console.log(imgInfo[i].name + " 保存成功")
+                  } else {
+                    console.log(imgInfo[i].name + " 保存失败", err)
+                  }
+                })
+              } else {
+                console.log(imgInfo[i].name + " 文件已存在")
+              }
+            })
+          }
+
+          // 其他的保存
+          fs.exists(savepath2, (isexist) => {
+            let savafacepath = savepath2 + '/' + (Number(faceCount[0]) - 1) + '.jpg'
+            console.log('savepath2', savepath2)
+            if (!isexist) {
+              console.log("不存在，创建目录")
+              fs.mkdir(savepath2, (err) => {
+                if (!err) {
+                  console.log('创建成功')
+                  fs.chmod(savepath2, '0777', (err) => {
+                    if (err) {
+                      console.log("修改失败")
+                    } else {
+                      console.log("修改权限成功")
+                      fs.exists(savafacepath, (isexist) => {
+                        console.log("isexist", isexist)
+                        if (!isexist) {
+                          fs.writeFile(savafacepath, dataBuffer, (err) => {
+                            if (!err) {
+                              console.log(imgInfo[i].name + " 保存成功")
+                            } else {
+                              console.log(imgInfo[i].name + " 保存失败", err)
+                            }
+                          })
+                        } else {
+                          console.log(imgInfo[i].name + " 文件已存在")
+                        }
+                      })
+                    }
+                  })
+                } else {
+                  fs.exists(savafacepath, (isexist) => {
+                    console.log("isexist", isexist)
+                    if (!isexist) {
+                      fs.writeFile(savafacepath, dataBuffer, (err) => {
+                        if (!err) {
+                          console.log(imgInfo[i].name + " 保存成功")
+                        } else {
+                          console.log(imgInfo[i].name + " 保存失败", err)
+                        }
+                      })
+                    } else {
+                      console.log(imgInfo[i].name + " 文件已存在")
+                    }
+                  })
+                }
+              })
+            } else {
+              console.log("路径存在", savafacepath)
+              fs.exists(savafacepath, (isexist) => {
+                console.log("isexist", isexist)
+                if (!isexist) {
+                  fs.writeFile(savafacepath, dataBuffer, (err) => {
+                    if (!err) {
+                      console.log(imgInfo[i].name + " 保存成功")
+                    } else {
+                      console.log(imgInfo[i].name + " 保存失败", err)
+                    }
+                  })
+                } else {
+                  console.log(imgInfo[i].name + " 文件已存在")
+                  
+                }
+              })
+            }
+          })
+
+        }
+
+        let filename = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/update_face_lib.py'
+        let dirName = imgInfo[0].name.split('_')[0]
+        exec('python ' + filename + ' --pic_path=/DATACENTER3/huifu/face_lib/' + dirName, (err, stdout, stdin) => {
+          console.log('裁剪人脸库')
+
+          if (err) {
+            console.log('err', err)
+          }
+          if (stdout) {
+            // parse the string
+            console.log('stdout:', stdout.replace(/[\r\n]/g, ""))
+            stdout = stdout.replace(/[\r\n]/g, "")
+            if(stdout === 'crop_face_succeed'){
+              console.log('上传且裁剪成功')
+              this.success({
+                code: 2000,
+                desc: "上传且裁剪成功"
+              })
+            }else{
+              console.log('上传且裁剪成功失败')
+              this.success({
+                code: 2002,
+                desc: stdout
+              })
+            }
+            
+          }
+        });
+
+      }
+    } else {
+      this.fail('请求方法不对')
+    }
+  }
+
   //保存上传的图片
   async saveimgAction() {
     this.setCorsHeader()
@@ -386,27 +533,39 @@ export default class extends Base {
     console.log('更新人脸库')
     this.setCorsHeader()
     if (this.isPost()) {
-      console.log('更新人脸库')
       let data = this.post()
       console.log(data)
       if (data.faceIds.length > 0) {
 
         let filename = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/update_face_lib.py'
-        exec('python ' + filename, function (err, stdout, stdin) {
+        exec('python ' + filename, (err, stdout, stdin) => {
+          console.log('更新人脸')
+
           if (err) {
             console.log('err', err)
           }
           if (stdout) {
             // parse the string
-            console.log(stdout)
+            console.log('stdout:', stdout.replace(/[\r\n]/g, ""))
+            stdout = stdout.replace(/[\r\n]/g, "")
+            if(stdout === 'regenerate_face_lib_succeed'){
+              console.log('更新成功')
+              this.success({
+                code: 2000,
+                desc: "更新成功"
+              })
+            }else{
+              console.log('更新失败')
+              this.success({
+                code: 2002,
+                desc: stdout
+              })
+            }
+            
           }
         });
 
-        console.log('更新成功')
-        this.success({
-          code: 2000,
-          desc: "更新成功"
-        })
+        
       } else {
         this.success({
           code: 2001,
