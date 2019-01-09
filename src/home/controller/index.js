@@ -3,9 +3,39 @@
 import Base from './base.js';
 
 const fs = require('fs');
-var exec = require('child_process').exec;
+const fse = require('fs-extra');
+const exec = require('child_process').exec;
+const jwt = require('jsonwebtoken');
 
 export default class extends Base {
+
+  /**
+   * 前置方法
+   * @return {Promise} []
+   */
+  __before(){
+    console.log('前置操作')
+    console.log('校验token')
+    let headerData = this.header()
+    console.log('headerDate:', headerData)
+    let token = headerData.authorization
+    console.log('token:', token)
+    if(token){
+      // verify a token symmetric
+      try {
+        let decoded = jwt.verify(token, 'shhhhh');
+        console.log('decoded:', decoded)
+      } catch (error) {
+        console.log('错误：', error)
+        this.fail({
+          code: 10010,
+          msg: 'token过期',
+          data: {}
+        })
+      }
+    }
+  }
+
   /**
    * index action
    * @return {Promise} []
@@ -16,8 +46,9 @@ export default class extends Base {
   }
   setCorsHeader() {
     this.header('Access-Control-Allow-Origin', this.header('origin') || '*');
-    this.header('Access-Control-Allow-Headers', 'Content-Type');
-    // this.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");
+    this.header('Access-Control-Allow-Headers', 'Authorization,Content-Type,X-Requested-With');
+    this.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");
+    this.header('Access-Control-Allow-Credentials', 'true');
   }
   // 保存表格
   async savetableAction() {
@@ -30,10 +61,10 @@ export default class extends Base {
         if (data.tableType === 'staff') {
           try {
             for (let i in data.tableInfo) {
-              let res = await this.model("teststaff").add(data.tableInfo[i])
+              let res = await this.model("staff_info").add(data.tableInfo[i])
               console.log('res:', res)
             }
-            // let res = await this.model("teststaff").addMany(data.tableInfo)
+            // let res = await this.model("staff_info").addMany(data.tableInfo)
             return this.jsonp({
               code: 2000,
               desc: "添加成功"
@@ -74,13 +105,187 @@ export default class extends Base {
       this.fail('请求的方法不对')
     }
   }
+  // 获取表格数据
+  async gettableAction() {
+    this.setCorsHeader()
+    var data = this.get()
+    console.log('获取到的数据：', data)
+    if (data.type === 'sche') {
+      data = await this.model('testschedule').select();
+      // console.log("查询到的数据：", data)
+      return this.success(data);
+    } else if (data.type === 'staff') {
+      data = await this.model('staff_info').select();
+      // console.log("查询到的数据：", data)
+      return this.success(data);
+    }
+  }
+  //删除表格数据
+  async deletetableAction() {
+    this.setCorsHeader()
+    if (this.isPost()) {
+      let data = this.post()
+      console.log(data)
+      if (data.type === 'sche') {
+        let res = await this.model("testschedule").where({
+          t_id: data.tableData.t_id
+        }).delete(data.tableData);
+        console.log('删除成功:', res)
+        console.log('更新成功')
+        this.success({
+          code: 2000,
+          desc: "更新成功"
+        })
+      } else if (data.type === 'staff') {
+        let res = await this.model("staff_info").where({
+          staff_id: data.tableData.staff_id
+        }).delete(data.tableData);
+        console.log('删除成功:', res)
+        console.log('删除成功')
+
+        if(data.tableData.photo_name !== ''){
+          console.log('删除人脸照片')
+          // 第一张保存的路径
+          let save1path = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + data.tableData.staff_id + '_' + data.tableData.name + '.jpg'
+          // 另外五张保存的路径
+          let save2path = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + data.tableData.staff_id + '/'
+          fse.remove(save1path, err => {
+            if (err) return console.error(err)
+          
+            console.log('删除第一张成功!')
+          })
+          fse.remove(save2path, err => {
+            if (err) return console.error(err)
+          
+            console.log('删除另外五张成功!')
+          })
+        }
+        this.success({
+          code: 2000,
+          desc: "删除成功"
+        })
+      } else {
+        this.fail('请求参数不对')
+      }
+    } else {
+      this.fail('请求方法不对')
+    }
+  }
+  //编辑表格信息
+  async edittableAction() {
+    this.setCorsHeader()
+    if (this.isPost()) {
+      let data = this.post()
+      console.log(data)
+      if (data.type === 'sche') {
+        let res = await this.model("testschedule").where({
+          t_id: data.tableData.t_id
+        }).update(data.tableData);
+        console.log('res:', res)
+        console.log('更新成功')
+        this.success({
+          code: 2000,
+          desc: "更新成功"
+        })
+      } else if (data.type === 'staff') {
+        let res = await this.model("staff_info").where({
+          staff_id: data.tableData.staff_id
+        }).update(data.tableData);
+        console.log('res:', res)
+        console.log('更新成功')
+        this.success({
+          code: 2000,
+          desc: "更新成功"
+        })
+      } else {
+        this.fail('请求参数不对')
+      }
+    } else {
+      this.fail('请求方法不对')
+    }
+  }
+  //添加表格信息
+  async addtableAction() {
+    this.setCorsHeader()
+    if (this.isPost()) {
+      let data = this.post()
+      console.log(data)
+      if (data.type === 'sche') {
+        let res = await this.model("testschedule").add(data.tableData);
+        console.log('res:', res)
+        console.log('更新成功')
+        this.success({
+          code: 2000,
+          desc: "更新成功"
+        })
+      } else if (data.type === 'staff') {
+        let res = await this.model("staff_info").add(data.tableData);
+        console.log('res:', res)
+        console.log('更新成功')
+        this.success({
+          code: 2000,
+          desc: "更新成功"
+        })
+      } else {
+        this.fail('请求参数不对')
+      }
+    } else {
+      this.fail('请求方法不对')
+    }
+  }
+  // 更新人脸库
+  async updatefaceAction() {
+    console.log('更新人脸库')
+    this.setCorsHeader()
+    if (this.isPost()) {
+      let data = this.post()
+      console.log('人脸', data)
+      // if (data.faceIds.length > 0) {
+
+        let filename = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/update_face_lib.py'
+        exec('python ' + filename, (err, stdout, stdin) => {
+          console.log('更新人脸')
+
+          if (err) {
+            console.log('err', err)
+          }
+          if (stdout) {
+            // parse the string
+            console.log('stdout:', stdout.replace(/[\r\n]/g, ""))
+            stdout = stdout.replace(/[\r\n]/g, "")
+            if(stdout === 'regenerate_face_lib_succeed'){
+              console.log('更新成功')
+              this.success({
+                code: 2000,
+                desc: "更新成功"
+              })
+            }else{
+              console.log('更新失败')
+              this.success({
+                code: 2002,
+                desc: stdout
+              })
+            }
+            
+          }
+        });
+      // } else {
+      //   this.success({
+      //     code: 2001,
+      //     desc: "没有需要更新的"
+      //   })
+      // }
+    } else {
+      this.fail('请求方法不对')
+    }
+  }
   // 保存拍摄的图片
   async imgAction() {
     console.log("保存拍摄的图片")
     this.setCorsHeader()
     if (this.isPost()) {
       let imgInfo = this.post()
-      // console.log("imgInfo:",imgInfo)
+      console.log("imgInfo:",imgInfo)
       imgInfo = imgInfo.imgInfo
       if (!think.isEmpty(imgInfo.name)) {
 
@@ -96,8 +301,10 @@ export default class extends Base {
         let faceCount = faceInfo[2].split('.')
         console.log(faceInfo, faceCount)
 
+        // 第一张保存的路径
         let savepath1 = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + faceInfo[0] + '_' + faceInfo[1] + '.jpg'
-        let savepath2 = '/DATACENTER3/huifu/face_lib/' + faceInfo[0]
+        // 第二张保存的路径
+        let savepath2 = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + faceInfo[0]
 
         // 第一张保存
         if (faceCount[0] === '1') {
@@ -208,9 +415,6 @@ export default class extends Base {
             })
           }
         })
-
-
-
       }
     } else {
       this.fail('请求方法不对')
@@ -223,22 +427,42 @@ export default class extends Base {
     this.setCorsHeader()
     if (this.isPost()) {
       let imgInfo = this.post()
-      console.log("imgInfo:",imgInfo)
+      // console.log("imgInfo:",imgInfo)
       imgInfo = imgInfo.imgInfo
       if (!think.isEmpty(imgInfo)) {
+
+        let iii = []
+        for(let j in imgInfo){
+          iii.push(imgInfo[j].url)
+          console.log(j)
+        }
+
+
+        var nary = iii.sort()
+        for(var i=0;i<iii.length;i++){
+          if (nary[i] === nary[i+1]){
+            console.log("数组重复内容："+nary[i]);
+          }
+          console.log('没有重复的')
+        }
+        let imgData = ''
+        let base64Data = ''
+        let dataBuffer = ''
+
         for(let i in imgInfo) {
+          console.log('这是', i)
           //接收前台POST过来的base64
-          var imgData = imgInfo[i].url
+          imgData = imgInfo[i].url
           //过滤data:URL
-          var base64Data = imgData.replace(/^data:image\/\w+;base64,/, "")
-          var dataBuffer = new Buffer(base64Data, 'base64')
+          base64Data = imgData.replace(/^data:image\/\w+;base64,/, "")
+          dataBuffer = new Buffer(base64Data, 'base64')
 
           let faceInfo = imgInfo[i].name.split('_')
           let faceCount = faceInfo[2].split('.')
-          console.log(faceInfo, faceCount)
+          // console.log(faceInfo, faceCount)
 
           let savepath1 = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + faceInfo[0] + '_' + faceInfo[1] + '.jpg'
-          let savepath2 = '/DATACENTER3/huifu/face_lib/' + faceInfo[0]
+          let savepath2 = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + faceInfo[0]
 
           // 第一张保存
           if (faceCount[0] === '1') {
@@ -330,11 +554,11 @@ export default class extends Base {
 
         let filename = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/update_face_lib.py'
         let dirName = imgInfo[0].name.split('_')[0]
-        exec('python ' + filename + ' --pic_path=/DATACENTER3/huifu/face_lib/' + dirName, (err, stdout, stdin) => {
+        exec('python ' + filename + ' --pic_path=/DATACENTER3/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + dirName, (err, stdout, stdin) => {
           console.log('裁剪人脸库')
 
           if (err) {
-            console.log('err', err)
+            console.log('err错误', err)
           }
           if (stdout) {
             // parse the string
@@ -347,7 +571,7 @@ export default class extends Base {
                 desc: "上传且裁剪成功"
               })
             }else{
-              console.log('上传且裁剪成功失败')
+              console.log('上传且裁剪失败')
               this.success({
                 code: 2002,
                 desc: stdout
@@ -410,166 +634,6 @@ export default class extends Base {
         return this.jsonp({
           code: 2002,
           desc: "文件格式错误"
-        })
-      }
-    } else {
-      this.fail('请求方法不对')
-    }
-  }
-  // 获取表格数据
-  async gettableAction() {
-    this.setCorsHeader()
-    let data = this.get()
-    console.log(data)
-    if (data.type === 'sche') {
-      data = await this.model('testschedule').select();
-      console.log("data:", data);
-      return this.success(data);
-    } else if (data.type === 'staff') {
-      data = await this.model('teststaff').select();
-      console.log("data:", data);
-      return this.success(data);
-    } else {
-      this.fail('请求方法不对')
-    }
-  }
-  //删除表格数据
-  async deletetableAction() {
-    this.setCorsHeader()
-    if (this.isPost()) {
-      let data = this.post()
-      console.log(data)
-      if (data.type === 'sche') {
-        let res = await this.model("testschedule").where({
-          t_id: data.tableData.t_id
-        }).delete(data.tableData);
-        console.log('res:', res)
-        console.log('更新成功')
-        this.success({
-          code: 2000,
-          desc: "更新成功"
-        })
-      } else if (data.type === 'staff') {
-        let res = await this.model("teststaff").where({
-          staff_id: data.tableData.staff_id
-        }).delete(data.tableData);
-        console.log('res:', res)
-        console.log('更新成功')
-        this.success({
-          code: 2000,
-          desc: "更新成功"
-        })
-      } else {
-        this.fail('请求参数不对')
-      }
-    } else {
-      this.fail('请求方法不对')
-    }
-  }
-  //编辑表格信息
-  async edittableAction() {
-    this.setCorsHeader()
-    if (this.isPost()) {
-      let data = this.post()
-      console.log(data)
-      if (data.type === 'sche') {
-        let res = await this.model("testschedule").where({
-          t_id: data.tableData.t_id
-        }).update(data.tableData);
-        console.log('res:', res)
-        console.log('更新成功')
-        this.success({
-          code: 2000,
-          desc: "更新成功"
-        })
-      } else if (data.type === 'staff') {
-        let res = await this.model("teststaff").where({
-          staff_id: data.tableData.staff_id
-        }).update(data.tableData);
-        console.log('res:', res)
-        console.log('更新成功')
-        this.success({
-          code: 2000,
-          desc: "更新成功"
-        })
-      } else {
-        this.fail('请求参数不对')
-      }
-    } else {
-      this.fail('请求方法不对')
-    }
-  }
-  //添加表格信息
-  async addtableAction() {
-    this.setCorsHeader()
-    if (this.isPost()) {
-      let data = this.post()
-      console.log(data)
-      if (data.type === 'sche') {
-        let res = await this.model("testschedule").add(data.tableData);
-        console.log('res:', res)
-        console.log('更新成功')
-        this.success({
-          code: 2000,
-          desc: "更新成功"
-        })
-      } else if (data.type === 'staff') {
-        let res = await this.model("teststaff").add(data.tableData);
-        console.log('res:', res)
-        console.log('更新成功')
-        this.success({
-          code: 2000,
-          desc: "更新成功"
-        })
-      } else {
-        this.fail('请求参数不对')
-      }
-    } else {
-      this.fail('请求方法不对')
-    }
-  }
-  //更新人脸库
-  async updatefaceAction() {
-    console.log('更新人脸库')
-    this.setCorsHeader()
-    if (this.isPost()) {
-      let data = this.post()
-      console.log(data)
-      if (data.faceIds.length > 0) {
-
-        let filename = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/update_face_lib.py'
-        exec('python ' + filename, (err, stdout, stdin) => {
-          console.log('更新人脸')
-
-          if (err) {
-            console.log('err', err)
-          }
-          if (stdout) {
-            // parse the string
-            console.log('stdout:', stdout.replace(/[\r\n]/g, ""))
-            stdout = stdout.replace(/[\r\n]/g, "")
-            if(stdout === 'regenerate_face_lib_succeed'){
-              console.log('更新成功')
-              this.success({
-                code: 2000,
-                desc: "更新成功"
-              })
-            }else{
-              console.log('更新失败')
-              this.success({
-                code: 2002,
-                desc: stdout
-              })
-            }
-            
-          }
-        });
-
-        
-      } else {
-        this.success({
-          code: 2001,
-          desc: "没有需要更新的"
         })
       }
     } else {
