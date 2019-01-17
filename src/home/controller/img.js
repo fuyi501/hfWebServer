@@ -229,12 +229,42 @@ export default class extends Base {
             }
           }
         });
-      } else {
-        this.success({
-          code: 2001,
-          desc: "没有需要更新的"
-        })
+      } 
+      // else {
+      //   this.success({
+      //     code: 2001,
+      //     desc: "没有需要更新的"
+      //   })
+      // }
+
+      if(data.type === 'delete') {
+        console.log('删除数据后更新')
+        exec('python ' + filename, (err, stdout, stdin) => {
+          console.log('更新人脸')
+          if (err) {
+            console.log('err', err)
+          }
+          if (stdout) {
+            // parse the string
+            console.log('stdout:', stdout.replace(/[\r\n]/g, ""))
+            stdout = stdout.replace(/[\r\n]/g, "")
+            if(stdout === 'regenerate_face_lib_succeed'){
+              console.log('更新成功')
+              this.success({
+                code: 2000,
+                desc: "更新成功"
+              })
+            }else{
+              console.log('更新失败')
+              this.success({
+                code: 2002,
+                desc: stdout
+              })
+            }
+          }
+        });
       }
+
     } else {
       this.fail('请求方法不对')
     }

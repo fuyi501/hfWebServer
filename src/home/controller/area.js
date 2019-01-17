@@ -1,6 +1,8 @@
 'use strict';
 
 import Base from './base.js';
+var schedule = require('node-schedule');
+var dayjs = require('dayjs')
 
 export default class extends Base {
   /**
@@ -9,10 +11,28 @@ export default class extends Base {
    */
   async indexAction() {
 
-    this.assign("title", "purcost")
-    // return this.success(stu);
-    return this.display();
-    // return this.json(stu);
+    let res = []
+
+    var j = schedule.scheduleJob('*/10 * * * * *', async () => {
+      console.log('date:', dayjs().format('YYYY-MM-DD HH:mm:ss'));
+      res = await this.model('staff_info').where('note != "" AND note != "null" AND working_state = "临时工" ').select();
+      // console.log('res:', res)
+      res.forEach(element => {
+        console.log(element.note, '时间相差：', dayjs(element.note).diff(dayjs(), 'day'), dayjs(element.note).isSame(dayjs().format('YYYY-MM-DD'))); // true)
+        if(dayjs(element.note).isSame(dayjs().format('YYYY-MM-DD'))){
+          console.log('删除过期临时员工', element.staff_id, element.name, element.note)
+        }
+      });
+      return this.success({
+        desc: '定时任务',
+        data: res
+      });
+    });
+
+    
+
+    this.assign("title", "定时任务")
+    
   }
   setCorsHeader() {
     this.header('Access-Control-Allow-Origin', this.header('origin') || '*');

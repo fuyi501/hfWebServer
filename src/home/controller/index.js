@@ -14,8 +14,8 @@ export default class extends Base {
    * @return {Promise} []
    */
   __before(){
-    console.log('前置操作')
-    console.log('校验token')
+    console.log('前置操作, 校验token')
+    this.setCorsHeader()
     let headerData = this.header()
     console.log('headerDate:', headerData)
     let token = headerData.authorization
@@ -26,12 +26,8 @@ export default class extends Base {
         let decoded = jwt.verify(token, 'shhhhh');
         console.log('decoded:', decoded)
       } catch (error) {
-        console.log('错误：', error)
-        this.fail({
-          code: 10010,
-          msg: 'token过期',
-          data: {}
-        })
+        console.log('错误：', error.message)
+        this.fail(10010,'token过期')
       }
     }
   }
@@ -111,7 +107,7 @@ export default class extends Base {
     var data = this.get()
     console.log('获取到的数据：', data)
     if (data.type === 'sche') {
-      data = await this.model('testschedule').select();
+      data = await this.model('testschedule').order('date DESC').select();
       // console.log("查询到的数据：", data)
       return this.success(data);
     } else if (data.type === 'staff') {
@@ -188,10 +184,31 @@ export default class extends Base {
           desc: "更新成功"
         })
       } else if (data.type === 'staff') {
-        let res = await this.model("staff_info").where({
-          staff_id: data.tableData.staff_id
-        }).update(data.tableData);
-        console.log('res:', res)
+
+        let oldStaffInfo = await this.model("staff_info").where({staff_id: data.tableData.staff_id}).select()
+        console.log('老的数据：', oldStaffInfo[0])
+        
+        if(data.tableData.photo_name !== ''){
+          // 老的路径
+          let old1path = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + oldStaffInfo[0].staff_id + '_' + oldStaffInfo[0].name + '.jpg'
+          // 新的路径
+          let new1path = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + data.tableData.staff_id + '_' + data.tableData.name + '.jpg'
+
+          console.log('之前的：', data.tableData.photo_name)
+          data.tableData.photo_name = data.tableData.staff_id + '_' + data.tableData.name + '.jpg'
+          console.log('之后的：', data.tableData.photo_name)
+
+          let res = await this.model("staff_info").where({staff_id: data.tableData.staff_id}).update(data.tableData)
+          console.log('更新人脸照片:', res)
+          
+          fse.move(old1path, new1path, err => {
+            if (err) return console.error(err)
+            console.log('更新第一张成功!')
+          })
+        } else {
+          let res = await this.model("staff_info").where({staff_id: data.tableData.staff_id}).update(data.tableData)
+          console.log('更新数据:', res)
+        }
         console.log('更新成功')
         this.success({
           code: 2000,

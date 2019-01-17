@@ -49,6 +49,7 @@ export default class extends Base {
     let alarmString = this.get()
     console.log(alarmString)
     let data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString]}).order('id DESC').limit(20).select();
+    data = data.reverse()
     // console.log("data:", data)
     let rootPath = '/DATACENTER3/huifu/HuiFu_Project/image_cache/'
     let newdata = data.map((element, index) => {
@@ -57,15 +58,17 @@ export default class extends Base {
         
         if (element.event === '职工') {
             return {
-                text: location[element.channel_name] + element.event + element.cause,
-                src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
-                time: element.datetime,
-                big_picture: base64Img.base64Sync(bigPath + element.big_picture),
-                small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+              id: element.id,
+              text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
+              src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+              time: element.datetime,
+              big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+              small_picture: base64Img.base64Sync(smallPath + element.small_picture)
             }
         } else {
             return {
-              text: location[element.channel_name] + element.event,
+              id: element.id,
+              text: element.id + ' ' + location[element.channel_name] + element.event,
               src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
@@ -96,6 +99,43 @@ export default class extends Base {
             // });
     //     }
     // })
+
+    return this.jsonp(newdata);
+  }
+  // 定时获取数据
+  async intervalgetAction(){
+    console.log("定时获取数据")
+    this.setCorsHeader()
+    let alarmString = this.get()
+    console.log(alarmString)
+    let data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString], id: ['>', alarmString.maxid]}).select();
+    console.log("定时获取数据, 查到的数据data:", data, data.length)
+    let rootPath = '/DATACENTER3/huifu/HuiFu_Project/image_cache/'
+    let newdata = data.map((element, index) => {
+        let bigPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
+        let smallPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/small_picture/'
+        
+        if (element.event === '职工') {
+            return {
+              id: element.id,
+              text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
+              src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+              time: element.datetime,
+              big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+              small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+            }
+        } else {
+            return {
+              id: element.id,
+              text: element.id + ' ' + location[element.channel_name] + element.event,
+              src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
+              time: element.datetime,
+              big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+              small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+            }
+        }
+       
+    })
 
     return this.jsonp(newdata);
   }
@@ -146,7 +186,33 @@ export default class extends Base {
       this.fail('请求方法不对')
     }
   }
-  //删除表格数据
+  //打开关闭所有报警信息
+  async opencloseallAction() {
+    this.setCorsHeader()
+    if (this.isPost()) {
+      let data = this.post()
+      console.log('获取到的数据', data)
+      if(data.audioData === 'openall'){
+        let res = await this.model("alarm_setting").where('1=1').update({is_alarm: 1});
+        console.log('编辑成功:', res)
+        this.success({
+          code: 2000,
+          desc: "修改成功"
+        })
+      }else if(data.audioData === 'closeall') {
+        console.log('关闭所有：', data.audioData)
+        let res = await this.model("alarm_setting").where('1=1').update({is_alarm: 0});
+        console.log('编辑成功:', res)
+        this.success({
+          code: 2000,
+          desc: "修改成功"
+        })
+      }
+    } else {
+      this.fail('请求方法不对')
+    }
+  }
+  //删除数据
   async deleteaudioAction() {
     this.setCorsHeader()
     if (this.isPost()) {

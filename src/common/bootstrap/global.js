@@ -12,9 +12,10 @@
 //  */
 
 // import crontab from 'node-crontab';
+var schedule = require('node-schedule');
 // let AipSpeech = require("baidu-aip-sdk").speech;
 // let fs = require('fs');
-// var dayjs = require('dayjs')
+var dayjs = require('dayjs')
 
 // // 替换百度云控制台中新建百度语音应用的 APPID 、Api Key 和 Secret Key
 // let client = new AipSpeech('15194283', 'nrrYN3OBLNpnRVi3Z6K2B9MH', 'lE5SlgBx3wdLce92obr7nm0EBUjBjCTL');
@@ -71,5 +72,19 @@
   
 //   }
 
-// // 1秒钟执行一次
+// 1秒钟执行一次
 // let jobId = crontab.scheduleJob('*/4 * * * * *', playaudio);
+
+// var j = schedule.scheduleJob('*/10 * * * * *', function(){
+//   console.log('date:', dayjs().format('YYYY-MM-DD HH:mm:ss'));
+//   let res = think.model('model', think.config('db'), 'home').model('staff_info').select();
+//   console.log('res:', res)
+// });
+
+// var K = schedule.scheduleJob({hour: 14, minute: 30}, function(){ 
+//   console.log('date:', dayjs().format('YYYY-MM-DD HH:mm:ss'));
+
+//   let res = this.model("staff_info").where({note: ['!=', '']}).select();
+//   console.log('res:', res)
+
+// });

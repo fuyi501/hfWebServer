@@ -48,7 +48,7 @@ export default class extends Base {
       console.log(data)
       const user = userDB.find(e => e.username === data.username && e.password === data.password)
       if (user) {
-        var token = jwt.sign({ data: data }, 'shhhhh', { expiresIn: '1h' });
+        var token = jwt.sign({ data: data }, 'shhhhh', { expiresIn: '24h' });
         console.log('token:', token)
         var decoded = jwt.verify(token, 'shhhhh');
         console.log('解码数据：',decoded, decoded.data) // 
