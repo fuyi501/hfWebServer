@@ -142,9 +142,9 @@ export default class extends Base {
         if(data.tableData.photo_name !== ''){
           console.log('删除人脸照片')
           // 第一张保存的路径
-          let save1path = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + data.tableData.staff_id + '_' + data.tableData.name + '.jpg'
+          let save1path = '/DATACENTER1/huifu/HuiFu_Project/staff_photo/' + data.tableData.staff_id + '_' + data.tableData.name + '.jpg'
           // 另外五张保存的路径
-          let save2path = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + data.tableData.staff_id + '/'
+          let save2path = '/DATACENTER1/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + data.tableData.staff_id + '/'
           fse.remove(save1path, err => {
             if (err) return console.error(err)
           
@@ -190,9 +190,9 @@ export default class extends Base {
         
         if(data.tableData.photo_name !== ''){
           // 老的路径
-          let old1path = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + oldStaffInfo[0].staff_id + '_' + oldStaffInfo[0].name + '.jpg'
+          let old1path = '/DATACENTER1/huifu/HuiFu_Project/staff_photo/' + oldStaffInfo[0].staff_id + '_' + oldStaffInfo[0].name + '.jpg'
           // 新的路径
-          let new1path = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + data.tableData.staff_id + '_' + data.tableData.name + '.jpg'
+          let new1path = '/DATACENTER1/huifu/HuiFu_Project/staff_photo/' + data.tableData.staff_id + '_' + data.tableData.name + '.jpg'
 
           console.log('之前的：', data.tableData.photo_name)
           data.tableData.photo_name = data.tableData.staff_id + '_' + data.tableData.name + '.jpg'
@@ -259,7 +259,7 @@ export default class extends Base {
       console.log('人脸', data)
       // if (data.faceIds.length > 0) {
 
-        let filename = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/update_face_lib.py'
+        let filename = '/DATACENTER1/huifu/HuiFu_Project/update_face_lib/update_face_lib.py'
         exec('python ' + filename, (err, stdout, stdin) => {
           console.log('更新人脸')
 
@@ -311,7 +311,7 @@ export default class extends Base {
         //过滤data:URL
         var base64Data = imgData.replace(/^data:image\/\w+;base64,/, "")
         var dataBuffer = new Buffer(base64Data, 'base64')
-        // let savepath = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + imgInfo.name
+        // let savepath = '/DATACENTER1/huifu/HuiFu_Project/staff_photo/' + imgInfo.name
         let savepath = think.RESOURCE_PATH + '/upload/faceimg/' + imgInfo.name
 
         let faceInfo = imgInfo.name.split('_')
@@ -319,9 +319,9 @@ export default class extends Base {
         console.log(faceInfo, faceCount)
 
         // 第一张保存的路径
-        let savepath1 = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + faceInfo[0] + '_' + faceInfo[1] + '.jpg'
+        let savepath1 = '/DATACENTER1/huifu/HuiFu_Project/staff_photo/' + faceInfo[0] + '_' + faceInfo[1] + '.jpg'
         // 第二张保存的路径
-        let savepath2 = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + faceInfo[0]
+        let savepath2 = '/DATACENTER1/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + faceInfo[0]
 
         // 第一张保存
         if (faceCount[0] === '1') {
@@ -478,8 +478,8 @@ export default class extends Base {
           let faceCount = faceInfo[2].split('.')
           // console.log(faceInfo, faceCount)
 
-          let savepath1 = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + faceInfo[0] + '_' + faceInfo[1] + '.jpg'
-          let savepath2 = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + faceInfo[0]
+          let savepath1 = '/DATACENTER1/huifu/HuiFu_Project/staff_photo/' + faceInfo[0] + '_' + faceInfo[1] + '.jpg'
+          let savepath2 = '/DATACENTER1/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + faceInfo[0]
 
           // 第一张保存
           if (faceCount[0] === '1') {
@@ -569,9 +569,9 @@ export default class extends Base {
 
         }
 
-        let filename = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/update_face_lib.py'
+        let filename = '/DATACENTER1/huifu/HuiFu_Project/update_face_lib/update_face_lib.py'
         let dirName = imgInfo[0].name.split('_')[0]
-        exec('python ' + filename + ' --pic_path=/DATACENTER3/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + dirName, (err, stdout, stdin) => {
+        exec('python ' + filename + ' --pic_path=/DATACENTER1/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + dirName, (err, stdout, stdin) => {
           console.log('裁剪人脸库')
 
           if (err) {

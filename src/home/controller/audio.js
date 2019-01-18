@@ -51,7 +51,7 @@ export default class extends Base {
     let data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString]}).order('id DESC').limit(20).select();
     data = data.reverse()
     // console.log("data:", data)
-    let rootPath = '/DATACENTER3/huifu/HuiFu_Project/image_cache/'
+    let rootPath = '/DATACENTER1/huifu/HuiFu_Project/image_cache/'
     let newdata = data.map((element, index) => {
         let bigPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
         let smallPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/small_picture/'
@@ -110,7 +110,7 @@ export default class extends Base {
     console.log(alarmString)
     let data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString], id: ['>', alarmString.maxid]}).select();
     console.log("定时获取数据, 查到的数据data:", data, data.length)
-    let rootPath = '/DATACENTER3/huifu/HuiFu_Project/image_cache/'
+    let rootPath = '/DATACENTER1/huifu/HuiFu_Project/image_cache/'
     let newdata = data.map((element, index) => {
         let bigPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
         let smallPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/small_picture/'
