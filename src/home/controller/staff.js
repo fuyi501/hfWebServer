@@ -65,7 +65,7 @@ export default class extends Base {
           // 第一张保存的路径
           let save1path = '/DATACENTER1/huifu/HuiFu_Project/staff_photo/' + element.staff_id + '_' + element.name + '.jpg'
           // 另外五张保存的路径
-          let save2path = '/DATACENTER1/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + element.staff_id + '/'
+          let save2path = '/DATACENTER1/huifu/generate_feature_lib/staff_face_ysd/' + element.staff_id + '/'
           fse.remove(save1path, err => {
             if (err) return console.error(err)
           
