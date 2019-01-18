@@ -8,7 +8,7 @@ export default {
   adapter: {
     mysql: {
       // host: 'localhost',
-      // host: '192.168.9.15',
+      // host: '192.168.100.240',
       host: '192.168.100.240',
       port: '3306',
       database: 'test',

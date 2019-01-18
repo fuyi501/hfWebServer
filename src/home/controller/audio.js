@@ -60,7 +60,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
-              src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -69,7 +69,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event,
-              src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
+              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -119,7 +119,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
-              src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -128,7 +128,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event,
-              src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
+              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
