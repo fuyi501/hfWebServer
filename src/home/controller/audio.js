@@ -80,7 +80,35 @@ export default class extends Base {
     data = data.reverse()
     // console.log("data:", data)
     let rootPath = '/DATACENTER1/huifu/image_cache/'
+    let rootPath2 = '/huifu2/huifu/HuiFu_Project/image_cache/'
     let newdata = data.map((element, index) => {
+      
+      if(element.category === 'area') {
+        let bigPath = rootPath2 + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
+        let smallPath = rootPath2 + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/small_picture/'
+        
+        if (element.event === '职工') {
+            return {
+              id: element.id,
+              text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
+              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+              time: element.datetime,
+              big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+              small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+            }
+        } else {
+            return {
+              id: element.id,
+              text: element.id + ' ' + location[element.channel_name] + element.event,
+              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
+              time: element.datetime,
+              big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+              small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+            }
+        }
+
+      } else {
+
         let bigPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
         let smallPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/small_picture/'
         
@@ -103,6 +131,8 @@ export default class extends Base {
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
             }
         }
+      }
+        
        
     })
     // console.log(newdata)
