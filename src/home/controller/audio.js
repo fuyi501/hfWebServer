@@ -76,7 +76,9 @@ export default class extends Base {
     this.setCorsHeader()
     let alarmString = this.get()
     console.log(alarmString)
-    let data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString]}).order('id DESC').limit(20).select();
+    let nowtime = dayjs().subtract(5, 'minute').format('YYYY-MM-DD HH:mm:ss')
+    console.log('新的时间：', dayjs().format('YYYY-MM-DD HH:mm:ss'), nowtime)
+    let data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString], datetime: ['>', nowtime]}).order('id DESC').limit(20).select();
     data = data.reverse()
     // console.log("data:", data)
     let rootPath = '/DATACENTER1/huifu/image_cache/'
