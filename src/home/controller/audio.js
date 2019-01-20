@@ -78,14 +78,15 @@ export default class extends Base {
     console.log(alarmString)
     let nowtime = dayjs().subtract(5, 'minute').format('YYYY-MM-DD HH:mm:ss')
     console.log('新的时间：', dayjs().format('YYYY-MM-DD HH:mm:ss'), nowtime)
-    let data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString], datetime: ['>', nowtime]}).order('id DESC').limit(20).select();
-    data = data.reverse()
+    // let data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString], datetime: ['>', nowtime]}).order('id DESC').limit(20).select();
+    let data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString], datetime: ['>', nowtime]}).limit(20).select();
+    // data = data.reverse()
     // console.log("data:", data)
     let rootPath = '/DATACENTER1/huifu/image_cache/'
     let rootPath2 = '/huifu2/huifu/HuiFu_Project/image_cache/'
     let newdata = data.map((element, index) => {
       
-      if(element.category === 'area') {
+      if(element.category === 'area' || element.category === 'road') {
         let bigPath = rootPath2 + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
         let smallPath = rootPath2 + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/small_picture/'
         
