@@ -169,8 +169,17 @@ export default class extends Base {
     this.setCorsHeader()
     let alarmString = this.get()
     console.log(alarmString)
-    let data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString], id: ['>', alarmString.maxid]}).select();
+    var data = ''
+    if(alarmString.maxid){
+      data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString], id: ['>', alarmString.maxid]}).select();
+    } else {
+      let nowtime = dayjs().subtract(5, 'minute').format('YYYY-MM-DD HH:mm:ss')
+      console.log('新的时间：', dayjs().format('YYYY-MM-DD HH:mm:ss'), nowtime)
+      data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString], datetime: ['>', nowtime]}).limit(20).select();
+
+    }
     console.log("定时获取数据, 查到的数据data:", data, '数据长度：', data.length)
+    
     let rootPath = '/DATACENTER1/huifu/image_cache/'
     let rootPath2 = '/huifu2/huifu/HuiFu_Project/image_cache/'
 
