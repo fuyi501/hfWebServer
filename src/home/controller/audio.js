@@ -138,6 +138,15 @@ export default class extends Base {
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
           }
+        } else if (element.event === '员工'){
+          return {
+            id: element.id,
+            text: element.id + ' ' + location[element.channel_name] + '员工' + element.cause,
+            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
+            time: element.datetime,
+            big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+            small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+          }
         } else {
             return {
               id: element.id,
@@ -172,6 +181,15 @@ export default class extends Base {
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
             }
+        } else if (element.event === '员工'){
+          return {
+            id: element.id,
+            text: element.id + ' ' + location[element.channel_name] + '员工' + element.cause,
+            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
+            time: element.datetime,
+            big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+            small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+          }
         } else {
             return {
               id: element.id,
@@ -255,6 +273,15 @@ export default class extends Base {
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
           }
+        } else if (element.event === '员工'){
+          return {
+            id: element.id,
+            text: element.id + ' ' + location[element.channel_name] + '员工' + element.cause,
+            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
+            time: element.datetime,
+            big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+            small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+          }
         } else {
           return {
             id: element.id,
@@ -285,6 +312,15 @@ export default class extends Base {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + '外事人员' + areaRoad[element.cause],
             src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
+            time: element.datetime,
+            big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+            small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+          }
+        } else if (element.event === '员工'){
+          return {
+            id: element.id,
+            text: element.id + ' ' + location[element.channel_name] + '员工' + element.cause,
+            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
