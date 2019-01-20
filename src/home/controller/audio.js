@@ -10,7 +10,7 @@ var base64Img = require('base64-img');
 // 替换百度云控制台中新建百度语音应用的 APPID 、Api Key 和 Secret Key
 let client = new AipSpeech('15194283', 'nrrYN3OBLNpnRVi3Z6K2B9MH', 'lE5SlgBx3wdLce92obr7nm0EBUjBjCTL');
 
-let location = {
+const location = {
     "Fnorth": "一车间一楼北楼梯间",
     "Fsouth": "一车间一楼南楼梯间",
     "Gate": "大门",
@@ -52,6 +52,36 @@ let location = {
     "Area_A7_92": "原料小罐区2",
     "Area_A7_84": "水洗塔1"
   }
+
+const areaRoad = {
+  "侵入A1": "侵入棚区",
+  "侵入A2": "侵入生产厂房",
+  "侵入A3": "侵入液碱盐酸储罐",
+  "侵入A4": "侵入一期生产装置",
+  "侵入A5": "侵入三期生产装置",
+  "侵入A6": "侵入装卸泵房",
+  "侵入A7": "侵入一期成品仓库",
+  "侵入A8": "侵入三期成品仓库",
+  "侵入R1": "侵入道路1",
+  "侵入R2": "侵入道路2",
+  "侵入R3": "侵入道路3",
+  "侵入R4": "侵入道路4",
+  "侵入R5": "侵入道路5",
+  "侵入R6": "侵入道路6",
+  "侵入R7": "侵入道路7",
+  "侵入R8": "侵入道路8",
+  "侵入R9": "侵入道路9",
+  "侵入R10": "侵入道路10",
+  "侵入R11": "侵入道路11",
+  "侵入R12": "侵入道路12",
+  "侵入R13": "侵入道路13",
+  "侵入R14": "侵入道路14",
+  "侵入R15": "侵入道路15",
+  "侵入R16": "侵入道路16",
+  "侵入R17": "侵入道路17",
+  "侵入R18": "侵入道路18",
+  "侵入R19": "侵入道路19",
+}
 
 export default class extends Base {
   /**
@@ -99,6 +129,15 @@ export default class extends Base {
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
             }
+        } else if (element.event === '外事员工'){
+          return {
+            id: element.id,
+            text: element.id + ' ' + location[element.channel_name] + '外事人员' + areaRoad[element.cause],
+            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
+            time: element.datetime,
+            big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+            small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+          }
         } else {
             return {
               id: element.id,
@@ -120,6 +159,15 @@ export default class extends Base {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
               src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+              time: element.datetime,
+              big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+              small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+            }
+        } else if (element.event === '外事员工'){
+            return {
+              id: element.id,
+              text: element.id + ' ' + location[element.channel_name] + '外事人员' + areaRoad[element.cause],
+              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -179,7 +227,7 @@ export default class extends Base {
 
     }
     console.log("定时获取数据, 查到的数据data:", data, '数据长度：', data.length)
-    
+
     let rootPath = '/DATACENTER1/huifu/image_cache/'
     let rootPath2 = '/huifu2/huifu/HuiFu_Project/image_cache/'
 
@@ -190,23 +238,32 @@ export default class extends Base {
         let smallPath = rootPath2 + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/small_picture/'
         
         if (element.event === '职工') {
-            return {
-              id: element.id,
-              text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
-              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
-              time: element.datetime,
-              big_picture: base64Img.base64Sync(bigPath + element.big_picture),
-              small_picture: base64Img.base64Sync(smallPath + element.small_picture)
-            }
+          return {
+            id: element.id,
+            text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
+            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+            time: element.datetime,
+            big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+            small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+          }
+        } else if (element.event === '外事员工'){
+          return {
+            id: element.id,
+            text: element.id + ' ' + location[element.channel_name] + '外事人员' + areaRoad[element.cause],
+            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
+            time: element.datetime,
+            big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+            small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+          }
         } else {
-            return {
-              id: element.id,
-              text: element.id + ' ' + location[element.channel_name] + element.event,
-              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
-              time: element.datetime,
-              big_picture: base64Img.base64Sync(bigPath + element.big_picture),
-              small_picture: base64Img.base64Sync(smallPath + element.small_picture)
-            }
+          return {
+            id: element.id,
+            text: element.id + ' ' + location[element.channel_name] + element.event,
+            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
+            time: element.datetime,
+            big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+            small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+          }
         }
 
       } else {
@@ -223,6 +280,15 @@ export default class extends Base {
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
             }
+        } else if (element.event === '外事员工'){
+          return {
+            id: element.id,
+            text: element.id + ' ' + location[element.channel_name] + '外事人员' + areaRoad[element.cause],
+            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
+            time: element.datetime,
+            big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+            small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+          }
         } else {
             return {
               id: element.id,
