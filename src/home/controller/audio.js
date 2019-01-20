@@ -81,7 +81,7 @@ export default class extends Base {
     // let data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString], datetime: ['>', nowtime]}).order('id DESC').limit(20).select();
     let data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString], datetime: ['>', nowtime]}).limit(20).select();
     // data = data.reverse()
-    // console.log("data:", data)
+    console.log("定时获取数据, 查到的数据data:", data, '数据长度：', data.length)
     let rootPath = '/DATACENTER1/huifu/image_cache/'
     let rootPath2 = '/huifu2/huifu/HuiFu_Project/image_cache/'
     let newdata = data.map((element, index) => {
@@ -170,9 +170,38 @@ export default class extends Base {
     let alarmString = this.get()
     console.log(alarmString)
     let data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString], id: ['>', alarmString.maxid]}).select();
-    console.log("定时获取数据, 查到的数据data:", data, data.length)
+    console.log("定时获取数据, 查到的数据data:", data, '数据长度：', data.length)
     let rootPath = '/DATACENTER1/huifu/image_cache/'
+    let rootPath2 = '/huifu2/huifu/HuiFu_Project/image_cache/'
+
     let newdata = data.map((element, index) => {
+
+      if(element.category === 'area' || element.category === 'road') {
+        let bigPath = rootPath2 + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
+        let smallPath = rootPath2 + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/small_picture/'
+        
+        if (element.event === '职工') {
+            return {
+              id: element.id,
+              text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
+              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+              time: element.datetime,
+              big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+              small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+            }
+        } else {
+            return {
+              id: element.id,
+              text: element.id + ' ' + location[element.channel_name] + element.event,
+              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
+              time: element.datetime,
+              big_picture: base64Img.base64Sync(bigPath + element.big_picture),
+              small_picture: base64Img.base64Sync(smallPath + element.small_picture)
+            }
+        }
+
+      } else {
+
         let bigPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
         let smallPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/small_picture/'
         
@@ -195,6 +224,7 @@ export default class extends Base {
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
             }
         }
+      }
        
     })
 
