@@ -112,8 +112,12 @@ export default class extends Base {
     let data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString], datetime: ['>', nowtime]}).limit(20).select();
     // data = data.reverse()
     console.log("定时获取数据, 查到的数据data:", data, '数据长度：', data.length)
-    let rootPath = '/DATACENTER1/huifu/image_cache/'
+
+    // 需要修改的路径
+    let rootPath = '/DATACENTER3/huifu/HuiFu_Project/image_cache/'
     let rootPath2 = '/huifu2/huifu/HuiFu_Project/image_cache/'
+
+
     let newdata = data.map((element, index) => {
       
       if(element.category === 'area' || element.category === 'road') {
@@ -124,7 +128,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
-              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+              src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -133,7 +137,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + '外事人员' + areaRoad[element.cause],
-            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
+            src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -142,7 +146,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + '员工' + element.cause,
-            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
+            src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -151,7 +155,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event,
-              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
+              src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -167,7 +171,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
-              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+              src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -176,7 +180,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + '外事人员' + areaRoad[element.cause],
-              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
+              src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -185,7 +189,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + '员工' + element.cause,
-            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
+            src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -194,7 +198,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event,
-              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
+              src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -237,7 +241,7 @@ export default class extends Base {
     console.log(alarmString)
     var data = ''
     if(alarmString.maxid){
-      data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString], id: ['>', alarmString.maxid]}).select();
+      data = await this.model('event_info').where({status: '异常', channel_name: ['IN', alarmString.alarmString], id: ['>', alarmString.maxid]}).limit(20).select();
     } else {
       let nowtime = dayjs().subtract(5, 'minute').format('YYYY-MM-DD HH:mm:ss')
       console.log('新的时间：', dayjs().format('YYYY-MM-DD HH:mm:ss'), nowtime)
@@ -246,8 +250,10 @@ export default class extends Base {
     }
     console.log("定时获取数据, 查到的数据data:", data, '数据长度：', data.length)
 
-    let rootPath = '/DATACENTER1/huifu/image_cache/'
+    // 需要修改的路径
+    let rootPath = '/DATACENTER3/huifu/HuiFu_Project/image_cache/'
     let rootPath2 = '/huifu2/huifu/HuiFu_Project/image_cache/'
+
 
     let newdata = data.map((element, index) => {
 
@@ -259,7 +265,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
-            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+            src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -268,7 +274,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + '外事人员' + areaRoad[element.cause],
-            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
+            src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -277,7 +283,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + '员工' + element.cause,
-            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
+            src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -286,7 +292,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + element.event,
-            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
+            src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -302,7 +308,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
-              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+              src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -311,7 +317,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + '外事人员' + areaRoad[element.cause],
-            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
+            src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -320,7 +326,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + '员工' + element.cause,
-            src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
+            src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -329,7 +335,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event,
-              src: 'http://192.168.100.240:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
+              src: 'http://192.168.9.15:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
