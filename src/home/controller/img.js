@@ -34,7 +34,8 @@ export default class extends Base {
 
       // 需要修改的路径
       // 裁剪人脸的 python 脚本路径
-      let filename = '/DATACENTER3/huifu/generate_feature_lib/update_face_lib_dlib.py'
+      // let filename = '/DATACENTER3/huifu/generate_feature_lib/update_face_lib_dlib.py' // 15服务器
+      let filename = '/DATACENTER1/huifu/generate_feature_lib/update_face_lib_dlib.py' // 汇富工厂
       let saveBigpath = think.RESOURCE_PATH + '/static/img/' + imgName // 保存大图的路径
       let saveSmallpath = think.RESOURCE_PATH + '/static/tempimg/' + imgName // 保存小图的路径
       
@@ -140,9 +141,14 @@ export default class extends Base {
 
       // 需要修改的路径
       // 第一张保存的路径
-      let save1path = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + imgInfo.staffInfo.staff_id + '_' + imgInfo.staffInfo.name + '.jpg'
+      // 15 服务器
+      // let save1path = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + imgInfo.staffInfo.staff_id + '_' + imgInfo.staffInfo.name + '.jpg'
       // 另外五张保存的路径
-      let save2path = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + imgInfo.staffInfo.staff_id + '/'
+      // let save2path = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + imgInfo.staffInfo.staff_id + '/'
+
+      // 汇富工厂
+      let save1path = '/DATACENTER1/huifu/HuiFu_Project/staff_photo/' + imgInfo.staffInfo.staff_id + '_' + imgInfo.staffInfo.name + '.jpg'
+      let save2path = '/DATACENTER1/huifu/generate_feature_lib/staff_face_ysd/' + imgInfo.staffInfo.staff_id + '/'
 
 
 
@@ -205,7 +211,8 @@ export default class extends Base {
       console.log(data)
 
       // 需要修改的路径
-      let filename = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/update_face_lib.py'
+      // let filename = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/update_face_lib.py' // 15服务器
+      let filename = '/DATACENTER1/huifu/generate_feature_lib/update_face_lib.py' // 汇富工厂
 
       if (data.updateStaffInfo.length > 0) {
         exec('python ' + filename, (err, stdout, stdin) => {

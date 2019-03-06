@@ -144,9 +144,14 @@ export default class extends Base {
 
           // 需要修改的路径
           // 第一张保存的路径
-          let save1path = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + data.tableData.staff_id + '_' + data.tableData.name + '.jpg'
-          // 另外五张保存的路径
-          let save2path = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + data.tableData.staff_id + '/'
+          // 15 服务器
+          // let save1path = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + data.tableData.staff_id + '_' + data.tableData.name + '.jpg'
+          // // 另外五张保存的路径
+          // let save2path = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + data.tableData.staff_id + '/'
+
+          // 汇富工厂
+          let save1path = '/DATACENTER1/huifu/HuiFu_Project/staff_photo/' + data.tableData.staff_id + '_' + data.tableData.name + '.jpg'
+          let save2path = '/DATACENTER1/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + data.tableData.staff_id + '/'
           
           
           fse.remove(save1path, err => {

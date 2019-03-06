@@ -2,7 +2,7 @@
   "apps": [{
     "name": "hfAdminServer",
     "script": "www/production.js",
-    "cwd": "/DATACENTER3/huifu/HuiFu_Project/hfAdmin/hfAdminServer",
+    "cwd": "/DATACENTER1/huifu/HuiFu_Project/hfAdmin/hfAdminServer",
     "exec_mode": "cluster",
     "instances": 0,
     "max_memory_restart": "1G",

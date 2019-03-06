@@ -114,7 +114,8 @@ export default class extends Base {
     console.log("定时获取数据, 查到的数据data:", data, '数据长度：', data.length)
 
     // 需要修改的路径
-    let rootPath = '/DATACENTER3/huifu/HuiFu_Project/image_cache/'
+    // let rootPath = '/DATACENTER3/huifu/HuiFu_Project/image_cache/' // 15服务器
+    let rootPath = '/DATACENTER1/huifu/image_cache/' // 汇富工厂
     let rootPath2 = '/huifu2/huifu/HuiFu_Project/image_cache/'
 
 
@@ -128,7 +129,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
-              src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+              src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -137,7 +138,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + '外事人员' + areaRoad[element.cause],
-            src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
+            src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -146,7 +147,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + '员工' + element.cause,
-            src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
+            src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -155,7 +156,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event,
-              src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
+              src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -171,7 +172,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
-              src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+              src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -180,7 +181,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + '外事人员' + areaRoad[element.cause],
-              src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
+              src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -189,7 +190,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + '员工' + element.cause,
-            src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
+            src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -198,7 +199,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event,
-              src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
+              src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -251,7 +252,8 @@ export default class extends Base {
     console.log("定时获取数据, 查到的数据data:", data, '数据长度：', data.length)
 
     // 需要修改的路径
-    let rootPath = '/DATACENTER3/huifu/HuiFu_Project/image_cache/'
+    // let rootPath = '/DATACENTER3/huifu/HuiFu_Project/image_cache/' // 15服务器
+    let rootPath = '/DATACENTER1/huifu/image_cache/' // 汇富工厂
     let rootPath2 = '/huifu2/huifu/HuiFu_Project/image_cache/'
 
 
@@ -265,7 +267,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
-            src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+            src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -274,7 +276,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + '外事人员' + areaRoad[element.cause],
-            src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
+            src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -283,7 +285,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + '员工' + element.cause,
-            src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
+            src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -292,7 +294,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + element.event,
-            src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
+            src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -308,7 +310,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event + ' ' + element.person_name + ' ' + element.cause,
-              src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
+              src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + element.event + element.cause + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -317,7 +319,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + '外事人员' + areaRoad[element.cause],
-            src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
+            src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + '外事人员' + areaRoad[element.cause] + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -326,7 +328,7 @@ export default class extends Base {
           return {
             id: element.id,
             text: element.id + ' ' + location[element.channel_name] + '员工' + element.cause,
-            src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
+            src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + '员工' + element.cause + '.mp3',
             time: element.datetime,
             big_picture: base64Img.base64Sync(bigPath + element.big_picture),
             small_picture: base64Img.base64Sync(smallPath + element.small_picture)
@@ -335,7 +337,7 @@ export default class extends Base {
             return {
               id: element.id,
               text: element.id + ' ' + location[element.channel_name] + element.event,
-              src: 'http://192.168.17.15:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
+              src: 'http://192.168.2.254:8360/static/audio/' + location[element.channel_name] + element.event + '.mp3',
               time: element.datetime,
               big_picture: base64Img.base64Sync(bigPath + element.big_picture),
               small_picture: base64Img.base64Sync(smallPath + element.small_picture)

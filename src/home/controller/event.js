@@ -117,7 +117,9 @@ export default class extends Base {
       // console.log(startTime, endTime)
 
       // 需要修改的路径
-        let rootPath = '/DATACENTER3/huifu/HuiFu_Project/image_cache/'
+        // let rootPath = '/DATACENTER3/huifu/HuiFu_Project/image_cache/' // 15服务器
+        let rootPath = '/DATACENTER1/huifu/image_cache/' // 汇富工厂
+
         let rootPath2 = '/huifu2/huifu/HuiFu_Project/image_cache/'
         var newRes = ''
         var res = ''
