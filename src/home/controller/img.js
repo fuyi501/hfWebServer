@@ -56,7 +56,7 @@ export default class extends Base {
 
               // 调用 python 脚本裁剪人脸，返回是否裁剪成功
               exec('python ' + filename + ' ' + saveBigpath + ' ' + saveSmallpath, (err, stdout, stdin) => {
-                console.log('裁剪人脸')
+                console.log('裁剪人脸, stdout值: ', stdout, err)
                 if (err) {
                   console.log('err错误', err)
                   this.success({
@@ -92,7 +92,7 @@ export default class extends Base {
 
           // 调用 python 脚本裁剪人脸，返回是否裁剪成功
           exec('python ' + filename + ' ' + saveBigpath + ' ' + saveSmallpath, (err, stdout, stdin) => {
-            console.log('裁剪人脸')
+            console.log('裁剪人脸, stdout值: ', stdout, err)
             if (err) {
               console.log('err错误', err)
               this.success({
@@ -149,8 +149,6 @@ export default class extends Base {
       // 汇富工厂
       let save1path = '/DATACENTER1/huifu/HuiFu_Project/staff_photo/' + imgInfo.staffInfo.staff_id + '_' + imgInfo.staffInfo.name + '.jpg'
       let save2path = '/DATACENTER1/huifu/generate_feature_lib/staff_face_ysd/' + imgInfo.staffInfo.staff_id + '/'
-
-
 
       let saveSmallpath1 = think.RESOURCE_PATH + '/static/tempimg/' + imgInfo.staffInfo.staff_id + '/0.jpg' // 保存第一张小图的路径
       let saveSmallpath2 = think.RESOURCE_PATH + '/static/tempimg/' + imgInfo.staffInfo.staff_id + '/' // 保存其他小图的路径
