@@ -115,6 +115,7 @@ export default class extends Base {
     if (this.isPost()) {
       let data = this.post()
       console.log(data)
+      var maxid = data.eventInfo.maxid ? data.eventInfo.maxid : ''
       let startTime = dayjs(data.eventInfo.startTime).format('YYYY-MM-DD HH:mm:ss')
       let endTime = dayjs(data.eventInfo.endTime).format('YYYY-MM-DD HH:mm:ss')
     //   let startTime = dayjs(data.eventInfo.startTime).format()
@@ -130,16 +131,32 @@ export default class extends Base {
         var res = ''
         
       if (data.eventInfo.event === 'all' && data.eventInfo.video === 'all') {
-        res = await this.model("event_info").where({datetime: {'>':startTime, '<':endTime}, status: '异常'}).limit(20).select();
+        if (maxid !== ''){
+          res = await this.model("event_info").where({datetime: {'>':startTime, '<':endTime}, status: '异常', id: ['>', maxid]}).limit(20).select();
+        }else {
+          res = await this.model("event_info").where({datetime: {'>':startTime, '<':endTime}, status: '异常'}).limit(20).select();
+        }
         // console.log('res:', res)
       } else if (data.eventInfo.event !== 'all' && data.eventInfo.video === 'all') {
-        res = await this.model("event_info").where({category: data.eventInfo.event, datetime: {'>':startTime, '<':endTime}, status: '异常'}).limit(20).select();
-        // console.log('res:', res)
+        if (maxid !== ''){
+          res = await this.model("event_info").where({category: data.eventInfo.event, datetime: {'>':startTime, '<':endTime}, status: '异常', id: ['>', maxid]}).limit(20).select();
+        }else {
+          res = await this.model("event_info").where({category: data.eventInfo.event, datetime: {'>':startTime, '<':endTime}, status: '异常'}).limit(20).select();
+        }
+          // console.log('res:', res)
       } else if (data.eventInfo.event === 'all' && data.eventInfo.video !== 'all') {
-        res = await this.model("event_info").where({channel_name: data.eventInfo.video, datetime: {'>':startTime, '<':endTime}, status: '异常'}).limit(20).select();
-        // console.log('res:', res)
+        if (maxid !== ''){
+          res = await this.model("event_info").where({channel_name: data.eventInfo.video, datetime: {'>':startTime, '<':endTime}, status: '异常', id: ['>', maxid]}).limit(20).select();
+        }else {
+          res = await this.model("event_info").where({channel_name: data.eventInfo.video, datetime: {'>':startTime, '<':endTime}, status: '异常'}).limit(20).select();
+        }
+          // console.log('res:', res)
       } else {
-        res = await this.model("event_info").where({category: data.eventInfo.event, channel_name: data.eventInfo.video, datetime: {'>':startTime, '<':endTime}, status: '异常'}).limit(20).select();
+        if (maxid !== ''){
+          res = await this.model("event_info").where({category: data.eventInfo.event, channel_name: data.eventInfo.video, datetime: {'>':startTime, '<':endTime}, status: '异常', id: ['>', maxid]}).limit(20).select();
+        }else {
+          res = await this.model("event_info").where({category: data.eventInfo.event, channel_name: data.eventInfo.video, datetime: {'>':startTime, '<':endTime}, status: '异常'}).limit(20).select();
+        }
       }
 
       var newRes = res.map((element, index) => {
