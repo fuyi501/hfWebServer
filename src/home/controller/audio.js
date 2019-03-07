@@ -50,7 +50,12 @@ const location = {
     "Area_A7_91": "原料小罐区1",
     "Area_A7_83": "盐酸小罐区主干道2",
     "Area_A7_92": "原料小罐区2",
-    "Area_A7_84": "水洗塔1"
+    "Area_A7_84": "水洗塔1",
+    "intrusion_xf_123": "办公室消防楼梯",
+    "intrusion_xf_125":"一车间消防楼梯",
+    "intrusion_xf_141":"二车间消防楼梯1",
+    "intrusion_xf_140":"二车间消防楼梯2",
+    "intrusion_xf_142":"二车间消防楼梯3"
   }
 
 const areaRoad = {
