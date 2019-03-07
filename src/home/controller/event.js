@@ -130,7 +130,7 @@ export default class extends Base {
         var res = ''
         
       if (data.eventInfo.event === 'all' && data.eventInfo.video === 'all') {
-        res = await this.model("event_info").where({datetime: {'>':startTime, '<':endTime}, status: '异常'}).limit(20).select();
+        res = await this.model("event_info").where({datetime: {'>':startTime, '<':endTime}, status: '异常'}).limit(100).select();
         // console.log('res:', res)
       } else if (data.eventInfo.event !== 'all' && data.eventInfo.video === 'all') {
         res = await this.model("event_info").where({category: data.eventInfo.event, datetime: {'>':startTime, '<':endTime}, status: '异常'}).limit(20).select();
