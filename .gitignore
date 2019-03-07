@@ -34,3 +34,5 @@ output.tar.gz
 app/
 
 runtime/
+
+www/static/audio
