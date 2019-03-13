@@ -17,3 +17,5 @@ npm start
 ```
 pm2 startOrReload pm2.json
 ```
+
+cnpm i node-schedule base64-img fs-extra jsonwebtoken

@@ -209,8 +209,14 @@ export default class extends Base {
   
         } else {
 
-          let bigPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
+          let bigPath = ''
           
+          if( element.channel_name.indexOf('intrusion_xf') != -1) {
+            bigPath = rootPath2 + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
+          } else {
+            bigPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
+          }
+
           if (element.event === '职工') {
               return {
                 id: element.id,

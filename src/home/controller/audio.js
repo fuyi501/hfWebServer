@@ -170,9 +170,17 @@ export default class extends Base {
 
       } else {
 
-        let bigPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
-        let smallPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/small_picture/'
+        let bigPath = ''
+        let smallPath = ''
         
+        if( element.channel_name.indexOf('intrusion_xf') != -1) {
+          bigPath = rootPath2 + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
+          smallPath = rootPath2 + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/small_picture/'
+        } else {
+          bigPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
+          smallPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/small_picture/'
+        }
+
         if (element.event === '职工') {
             return {
               id: element.id,
@@ -308,9 +316,17 @@ export default class extends Base {
 
       } else {
 
-        let bigPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
-        let smallPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/small_picture/'
+        let bigPath = ''
+        let smallPath = ''
         
+        if( element.channel_name.indexOf('intrusion_xf') != -1) {
+          bigPath = rootPath2 + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
+          smallPath = rootPath2 + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/small_picture/'
+        } else {
+          bigPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
+          smallPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/small_picture/'
+        }
+
         if (element.event === '职工') {
             return {
               id: element.id,
