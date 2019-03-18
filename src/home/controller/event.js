@@ -211,11 +211,11 @@ export default class extends Base {
 
           let bigPath = ''
           
-          if( element.channel_name.indexOf('Intrusion_xf') > -1) {
-            bigPath = rootPath2 + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
-          } else {
+          // if( element.channel_name.indexOf('Intrusion_xf') > -1) {
+          //   bigPath = rootPath2 + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
+          // } else {
             bigPath = rootPath + element.category + '/' + element.channel_name + '/' + dayjs(element.datetime).format('YYYY-MM-DD') + '/big_picture/'
-          }
+          // }
 
           console.log('bigPath:', bigPath)
 
