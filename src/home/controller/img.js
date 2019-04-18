@@ -5,6 +5,7 @@ const base64Img = require('base64-img');
 const exec = require('child_process').exec;
 const fs = require('fs');
 const fse = require('fs-extra')
+var dayjs = require('dayjs');
 
 export default class extends Base {
   /**
@@ -36,6 +37,8 @@ export default class extends Base {
       // 裁剪人脸的 python 脚本路径
       // let filename = '/DATACENTER3/huifu/generate_feature_lib/update_face_lib_dlib.py' // 15服务器
       let filename = '/DATACENTER1/huifu/generate_feature_lib/update_face_lib_dlib.py' // 汇富工厂
+
+
       let saveBigpath = think.RESOURCE_PATH + '/static/img/' + imgName // 保存大图的路径
       let saveSmallpath = think.RESOURCE_PATH + '/static/tempimg/' + imgName // 保存小图的路径
       
@@ -143,7 +146,7 @@ export default class extends Base {
       // 第一张保存的路径
       // 15 服务器
       // let save1path = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + imgInfo.staffInfo.staff_id + '_' + imgInfo.staffInfo.name + '.jpg'
-      // 另外五张保存的路径
+      // // 另外五张保存的路径
       // let save2path = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + imgInfo.staffInfo.staff_id + '/'
 
       // 汇富工厂
@@ -161,7 +164,6 @@ export default class extends Base {
             if (err) return console.error(err)
             console.log('第一张图片保存成功!')
           }) // copies file
-
         } else {
           console.log("路径存在", save1path)
         }
@@ -178,6 +180,8 @@ export default class extends Base {
               fse.copy(saveSmallpath2, save2path, err => {
                 if (err) return console.error(err)
                 console.log('其余图片保存成功!')
+                let res = this.model("staff_record").add({staff_id: imgInfo.staffInfo.staff_id, name: imgInfo.staffInfo.name, record_time: dayjs().format('YYYY-MM-DD HH:mm:ss')});
+                console.log('更新结果:', res)
                 this.success({
                   code: 2000,
                   desc: "其余图片保存成功"

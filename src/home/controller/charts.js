@@ -28,19 +28,19 @@ export default class extends Base {
     if (this.isGet()) {
       let data = this.get()
       console.log(data)
-      var searchTime = data.eventTime.split(',')
+      var searchDate = dayjs(data.eventTime).format('YYYY-MM-DD')
       var newRes = []
       if (data.eventType === 'all') {
 
         let res1 = await this.model("event_info").query(
           `SELECT DATE_FORMAT(datetime, '%Y-%m-%d %H') eventTime, COUNT(status) eventCount 
           FROM event_info 
-          WHERE status='正常' AND datetime BETWEEN '2019-03-03 06:00:00' AND '2019-03-03 22:00:00' 
+          WHERE status='正常' AND datetime like '${searchDate}%'
           GROUP BY eventTime`)
         let res2 = await this.model("event_info").query(
           `SELECT DATE_FORMAT(datetime, '%Y-%m-%d %H') eventTime, COUNT(status) eventCount 
           FROM event_info 
-          WHERE status='异常' AND datetime BETWEEN '2019-03-03 06:00:00' AND '2019-03-03 22:00:00' 
+          WHERE status='异常' AND datetime like '${searchDate}%' 
           GROUP BY eventTime`)
 
         console.table(res1)
@@ -62,36 +62,18 @@ export default class extends Base {
         if (newRes.length > 0) {
           this.success(newRes)
         } else {
-          this.success([
-            { '日期': '06:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '07:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '08:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '09:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '10:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '11:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '12:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '13:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '14:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '15:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '16:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '17:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            // { '日期': '18:00', '异常事件': '', '正常事件': '', '异常率': '' },
-            // { '日期': '19:00', '异常事件': '', '正常事件': '', '异常率': '' },
-            // { '日期': '20:00', '异常事件': '', '正常事件': '', '异常率': '' },
-            // { '日期': '21:00', '异常事件': '', '正常事件': '', '异常率': '' },
-            // { '日期': '22:00', '异常事件': '', '正常事件': '', '异常率': '' },
-          ])
+          this.success([])
         }
       } else {
         let res1 = await this.model("event_info").query(
           `SELECT DATE_FORMAT(datetime, '%Y-%m-%d %H') eventTime, COUNT(status) eventCount 
           FROM event_info 
-          WHERE category='${data.eventType}' AND status='正常' AND datetime BETWEEN '2019-03-03 06:00:00' AND '2019-03-03 22:00:00' 
+          WHERE category='${data.eventType}' AND status='正常' AND datetime like '${searchDate}%'
           GROUP BY eventTime`)
         let res2 = await this.model("event_info").query(
           `SELECT DATE_FORMAT(datetime, '%Y-%m-%d %H') eventTime, COUNT(status) eventCount 
           FROM event_info 
-          WHERE category='${data.eventType}' AND status='异常' AND datetime BETWEEN '2019-03-03 06:00:00' AND '2019-03-03 22:00:00' 
+          WHERE category='${data.eventType}' AND status='异常' AND datetime like '${searchDate}%'
           GROUP BY eventTime`)
 
         console.table(res1)
@@ -113,27 +95,36 @@ export default class extends Base {
         if (newRes.length > 0) {
           this.success(newRes)
         } else {
-          this.success([
-            { '日期': '06:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '07:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '08:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '09:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '10:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '11:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '12:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '13:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '14:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '15:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '16:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            { '日期': '17:00', '异常事件': 0, '正常事件': 0, '异常率': 0 },
-            // { '日期': '18:00', '异常事件': '', '正常事件': '', '异常率': '' },
-            // { '日期': '19:00', '异常事件': '', '正常事件': '', '异常率': '' },
-            // { '日期': '20:00', '异常事件': '', '正常事件': '', '异常率': '' },
-            // { '日期': '21:00', '异常事件': '', '正常事件': '', '异常率': '' },
-            // { '日期': '22:00', '异常事件': '', '正常事件': '', '异常率': '' },
-          ])
+          this.success([])
         }
       }
+    } else {
+      this.fail('请求方法不对')
+    }
+  }
+
+  // 获取首页主要数据
+  async maininfoAction() {
+    console.log("获取首页主要数据")
+    this.setCorsHeader()
+    if (this.isGet()) {
+      let data = this.get()
+      console.log(data)
+      
+        let allEvent = await this.model("event_info").where({datetime: ['like', dayjs().format('YYYY-MM-DD') + '%']}).count();
+        let ycEvent = await this.model("event_info").where({status: '异常', datetime: ['like', dayjs().format('YYYY-MM-DD') + '%']}).count();
+        let zcEvent = await this.model("event_info").where({status: '正常', datetime: ['like', dayjs().format('YYYY-MM-DD') + '%']}).count();
+        let allPerson = await this.model("staff_info").count();
+        let newPerson = await this.model("staff_record").where({record_time: ['like', dayjs().format('YYYY-MM-DD') + '%']}).count();
+        console.log('res:', allEvent, ycEvent, zcEvent, allPerson, newPerson)
+        this.success({
+          allEvent: allEvent, // 总事件
+          ycEvent: ycEvent, // 异常事件
+          zcEvent: zcEvent, // 正常事件
+          allPerson: allPerson, // 总人数
+          newPerson: newPerson // 新增人数
+        })
+      
     } else {
       this.fail('请求方法不对')
     }

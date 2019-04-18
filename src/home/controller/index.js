@@ -31,7 +31,6 @@ export default class extends Base {
       }
     }
   }
-
   /**
    * index action
    * @return {Promise} []
@@ -75,7 +74,7 @@ export default class extends Base {
         } else if (data.tableType === 'schedule') {
           try {
             for (let i in data.tableInfo) {
-              let res = await this.model("testschedule").add(data.tableInfo[i])
+              let res = await this.model("schedule_info").add(data.tableInfo[i])
               console.log('res:', res)
             }
             return this.jsonp({
@@ -107,7 +106,7 @@ export default class extends Base {
     var data = this.get()
     console.log('获取到的数据：', data)
     if (data.type === 'sche') {
-      data = await this.model('testschedule').order('date DESC').select();
+      data = await this.model('schedule_info').order('date DESC').select();
       // console.log("查询到的数据：", data)
       return this.success(data);
     } else if (data.type === 'staff') {
@@ -116,14 +115,14 @@ export default class extends Base {
       return this.success(data);
     }
   }
-  //删除表格数据
+  // 删除表格数据
   async deletetableAction() {
     this.setCorsHeader()
     if (this.isPost()) {
       let data = this.post()
       console.log(data)
       if (data.type === 'sche') {
-        let res = await this.model("testschedule").where({
+        let res = await this.model("schedule_info").where({
           t_id: data.tableData.t_id
         }).delete(data.tableData);
         console.log('删除成功:', res)
@@ -144,7 +143,7 @@ export default class extends Base {
 
           // 需要修改的路径
           // 第一张保存的路径
-          // 15 服务器
+          // // 15服务器
           // let save1path = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + data.tableData.staff_id + '_' + data.tableData.name + '.jpg'
           // // 另外五张保存的路径
           // let save2path = '/DATACENTER3/huifu/HuiFu_Project/update_face_lib/staff_face_ysd/' + data.tableData.staff_id + '/'
@@ -176,14 +175,14 @@ export default class extends Base {
       this.fail('请求方法不对')
     }
   }
-  //编辑表格信息
+  // 编辑表格信息
   async edittableAction() {
     this.setCorsHeader()
     if (this.isPost()) {
       let data = this.post()
       console.log(data)
       if (data.type === 'sche') {
-        let res = await this.model("testschedule").where({
+        let res = await this.model("schedule_info").where({
           t_id: data.tableData.t_id
         }).update(data.tableData);
         console.log('res:', res)
@@ -230,14 +229,14 @@ export default class extends Base {
       this.fail('请求方法不对')
     }
   }
-  //添加表格信息
+  // 添加表格信息
   async addtableAction() {
     this.setCorsHeader()
     if (this.isPost()) {
       let data = this.post()
       console.log(data)
       if (data.type === 'sche') {
-        let res = await this.model("testschedule").add(data.tableData);
+        let res = await this.model("schedule_info").add(data.tableData);
         console.log('res:', res)
         console.log('更新成功')
         this.success({
@@ -607,60 +606,6 @@ export default class extends Base {
           }
         });
 
-      }
-    } else {
-      this.fail('请求方法不对')
-    }
-  }
-
-  //保存上传的图片
-  async saveimgAction() {
-    this.setCorsHeader()
-    if (this.isPost()) {
-      let userInfo = this.post()
-      console.log("userInfo:", userInfo)
-      let userAvatar = this.file('avatar')
-      console.log(userAvatar)
-      if (userAvatar.originalFilename) {
-        fs.readFile(userAvatar.path, (err, data) => {
-
-          // var imgType = userAvatar.originalFilename.split('.')[1]
-          // var newName = userInfo.uid  + '.' + imgType
-          var savePath = think.RESOURCE_PATH + '/upload/avatar/' + userAvatar.originalFilename
-          fs.exists(savePath, (isexist) => {
-            console.log("是否已存在：", isexist)
-            if (!isexist) {
-              fs.writeFile(savePath, data, (err) => {
-                console.log("不存在，准备保存")
-                if (err === null) {
-                  console.log("保存成功")
-                  return this.jsonp({
-                    code: 2000,
-                    desc: "添加成功"
-                  })
-                } else {
-                  console.log("保存失败")
-                  return this.jsonp({
-                    code: 2000,
-                    desc: err
-                  })
-                }
-
-              })
-            } else {
-              console.log("文件已存在")
-              return this.jsonp({
-                code: 2001,
-                desc: "文件已存在"
-              })
-            }
-          })
-        })
-      } else {
-        return this.jsonp({
-          code: 2002,
-          desc: "文件格式错误"
-        })
       }
     } else {
       this.fail('请求方法不对')

@@ -2,6 +2,7 @@
 
 import Base from './base.js';
 const fse = require('fs-extra');
+const base64Img = require('base64-img');
 
 export default class extends Base {
   /**
@@ -92,6 +93,31 @@ export default class extends Base {
         code: 2000,
         desc: "删除成功"
       })
+    } else {
+      this.fail('请求方法不对')
+    }
+  }
+
+  // 获取员工图片
+  async getimgAction() {
+    console.log("获取员工图片")
+    this.setCorsHeader()
+    if (this.isGet()) {
+      let data = this.get()
+      console.log("获取员工图片", data)
+      if(data){
+        // 15服务器
+        // let imgPath = '/DATACENTER3/huifu/HuiFu_Project/staff_photo/' + data.img
+        // 汇富工厂
+        let imgPath = '/DATACENTER1/huifu/HuiFu_Project/staff_photo/' + data.img
+        
+        let img64 = base64Img.base64Sync(imgPath)
+        console.log(img64)
+        this.success({
+          code: 2000,
+          img: img64
+        })
+      }
     } else {
       this.fail('请求方法不对')
     }
